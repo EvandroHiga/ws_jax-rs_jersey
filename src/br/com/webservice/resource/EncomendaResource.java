@@ -1,10 +1,19 @@
 package br.com.webservice.resource;
 
+import java.io.StringReader;
+import java.net.URI;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import br.com.webservice.dao.EncomendaDAO;
 import br.com.webservice.modelo.Encomenda;
@@ -16,15 +25,13 @@ public class EncomendaResource {
 	//
 	// Testar o funcionamento do webservice
 	//
-	@Path("/testWs")
+	@Path("/test")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Encomenda testWs() {
-		Produto produto = new Produto(0, "Nome do Produto", 10.0, 1);
 		Encomenda encomenda = new Encomenda();
 		
-		encomenda.setId(0);
-		encomenda.setProduto(produto);
+		encomenda.setProduto(new Produto("Nome do Produto", 10.0, 1));
 		encomenda.setCidade("Sao Paulo");
 		encomenda.setRua("Av. Brasil");
 		
@@ -32,23 +39,51 @@ public class EncomendaResource {
 	}
 	
 	//
-	// Retrieve
+	// Retrieve XML
 	//
-	@Path("/busca/{id}")
+	@Path("/buscar/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Encomenda getEncomenda(@PathParam("id") int id) {
-		return new EncomendaDAO().getEncomenda(id);
+		return new EncomendaDAO().getEncomendaDao(id);
 	}
+	
+	
+	//
+	// Retrieve JSON c/ GSon
+	//
+	
 	
 	//
 	// Cria uma nova encomenda
 	//
-	public void criaEncomenda() {
+	@Path("/criarNovaEncomenda")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response criaEncomenda(String encomendaXml) {
+		int idEncomenda = 0;
 		
+		try {
+			JAXBContext jaxbContext;
+			jaxbContext = JAXBContext.newInstance(Encomenda.class);
+			
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			Encomenda encomendaObj = (Encomenda)unmarshaller.unmarshal(new StringReader(encomendaXml));
+			
+			idEncomenda = new EncomendaDAO().criaEncomendaDao(encomendaObj);
+			
+			return Response.created(URI.create("encomenda/buscar/" + String.valueOf(idEncomenda))).build();
+			
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	//
 	// Adiciona um produto em uma encomenda existente
 	//
+	
+	
 }

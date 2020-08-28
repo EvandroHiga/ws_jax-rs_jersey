@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Encomenda {
-	private int id;
 	private List<Produto> produtos = new ArrayList<Produto>();
 	private String cidade;
 	private String rua;
@@ -18,21 +17,15 @@ public class Encomenda {
 	// Construtor vazio p/ o JAXB
 	public Encomenda() {}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public Produto getProduto(int id) {
 		return produtos.get(id);
 	}
 	public List<Produto> getTodosProdutos() {
 		return produtos;
 	}
-	public void setProduto(Produto produto) {
+	public Encomenda setProduto(Produto produto) {
 		produtos.add(produto);
+		return this;
 	}
 	
 	public String getCidade() {

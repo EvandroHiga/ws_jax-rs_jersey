@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Produto {
-	private int id;
 	private String nome;
 	private double preco;
 	private int quantidade;
@@ -15,18 +14,10 @@ public class Produto {
 	// Construtor vazio p/ o JAXB
 	public Produto() {}
 	
-	public Produto(int id, String nome, double preco, int quantidade) {
-		this.id = id;
+	public Produto(String nome, double preco, int quantidade) {
 		this.nome = nome;
 		this.preco = preco;
 		this.quantidade = quantidade;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public String getNome() {
