@@ -3,6 +3,7 @@ package br.com.webservice.resource;
 import java.io.StringReader;
 import java.net.URI;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,7 +22,10 @@ import br.com.webservice.modelo.Produto;
 
 @Path("encomenda")
 public class EncomendaResource {
-
+	
+	@Inject
+	private EncomendaDAO dao;
+	
 	//
 	// Testar o funcionamento do webservice
 	//
@@ -45,7 +49,7 @@ public class EncomendaResource {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Encomenda getEncomenda(@PathParam("id") int id) {
-		return new EncomendaDAO().getEncomendaDao(id);
+		return dao.getEncomendaDao(id);
 	}
 	
 	
@@ -70,7 +74,7 @@ public class EncomendaResource {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			Encomenda encomendaObj = (Encomenda)unmarshaller.unmarshal(new StringReader(encomendaXml));
 			
-			idEncomenda = new EncomendaDAO().criaEncomendaDao(encomendaObj);
+			idEncomenda = dao.criaEncomendaDao(encomendaObj);
 			
 			return Response.created(URI.create("encomenda/buscar/" + String.valueOf(idEncomenda))).build();
 			
@@ -81,9 +85,18 @@ public class EncomendaResource {
 		return null;
 	}
 	
+	
 	//
 	// Adiciona um produto em uma encomenda existente
 	//
+//	@Path("/adicionarProduto/{idEncomenda}")
+//	public Response adicionaProduto(@PathParam("idEncomenda") int idEncomenda, String produtoXml) {
+//		if(new EncomendaDAO().isEncomendaExistente(idEncomenda)) {
+//			return Response.noContent().build();
+//		} else {
+//			
+//		}
+//	}
 	
 	
 }

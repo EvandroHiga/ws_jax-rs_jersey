@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.ManagedBean;
+
 import br.com.webservice.modelo.Encomenda;
 import br.com.webservice.modelo.Produto;
 
+@ManagedBean
 public class EncomendaDAO {
 	//
 	// bdMock: Map para simular um banco de dados
@@ -17,14 +20,14 @@ public class EncomendaDAO {
 	// static clause: popula o banco mockado
 	static {
 		Encomenda encomenda01 = new Encomenda();
-		encomenda01.setProduto(new Produto("Playstation 4", 2300, 1))
-					.setProduto(new Produto("Jogo de PS4 (Esporte)", 120, 1));
+		encomenda01.setProduto(new Produto("Playstation 4", Double.valueOf(2300), 1))
+					.setProduto(new Produto("Jogo de PS4 (Esporte)", Double.valueOf(120), 1));
 		encomenda01.setCidade("Sao Paulo");
 		encomenda01.setRua("Av. Paulista");
 		
 		Encomenda encomenda02 = new Encomenda();
-		encomenda02.setProduto(new Produto("SmartTV 42pol", 1450, 1))
-					.setProduto(new Produto("Gift Card", 50, 3));
+		encomenda02.setProduto(new Produto("SmartTV 42pol", Double.valueOf(1450), 1))
+					.setProduto(new Produto("Gift Card", Double.valueOf(50), 3));
 		encomenda02.setCidade("Florianopolis");
 		encomenda02.setRua("Av. Mauro Ramos");
 		
@@ -40,6 +43,10 @@ public class EncomendaDAO {
 		int id = contador.getAndIncrement();
 		bdMock.put(id, encomendaObj);
 		return id;
+	}
+
+	public boolean isEncomendaExistente(int idEncomenda) {
+		return bdMock.containsKey(idEncomenda);
 	}
 	
 }

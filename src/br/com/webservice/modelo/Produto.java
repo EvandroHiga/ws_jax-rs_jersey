@@ -14,7 +14,7 @@ public class Produto {
 	// Construtor vazio p/ o JAXB
 	public Produto() {}
 	
-	public Produto(String nome, double preco, int quantidade) {
+	public Produto(String nome, Double preco, Integer quantidade) {
 		this.nome = nome;
 		this.preco = preco;
 		this.quantidade = quantidade;
